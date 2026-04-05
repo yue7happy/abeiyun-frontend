@@ -1836,3 +1836,4 @@ function App() {
 }
 
 export default App
+const API_URL = 'https://backend.yue7happy.workers.dev'; 
