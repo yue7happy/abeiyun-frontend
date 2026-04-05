@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import io from 'socket.io-client'
 import './App.css'
 
-const API_URL = 'https://teamup-backend.yue7happy.workers.dev';
 const statusColors = {
   matching: '#ea4335',
   gaming: '#34a853',
@@ -154,7 +153,6 @@ function App() {
     // 并行获取用户列表和房间列 ?
     Promise.all([
       // 获取用户列表
-      fetch(`${API_URL}/api/users`)
         .then(res => res.json())
         .then(data => {
           
@@ -166,7 +164,6 @@ function App() {
         }),
       
       // 获取房间列表
-      fetch(`${API_URL}/api/rooms`)
         .then(res => res.json())
         .then(data => {
           
@@ -359,7 +356,6 @@ function App() {
 
   const fetchRooms = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/rooms`)
       const data = await res.json()
       setRooms(sortRooms(data))
     } catch (err) {
@@ -369,7 +365,6 @@ function App() {
 
   const fetchUsers = async (updateCurrentUser = true) => {
     try {
-      const res = await fetch(`${API_URL}/api/users`)
       const data = await res.json()
       
       setUsers(data)
@@ -395,7 +390,6 @@ function App() {
 
   const fetchRoomUsers = async (roomId) => {
     try {
-      const res = await fetch(`${API_URL}/api/rooms/${roomId}/users`)
       const data = await res.json()
       setRoomUsers(data)
     } catch (err) {
@@ -439,7 +433,6 @@ function App() {
     setError('')
     
     try {
-      const res = await fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -462,7 +455,6 @@ function App() {
     if (!newRoomName.trim()) return
 
     try {
-      const res = await fetch(`${API_URL}/api/rooms`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newRoomName, createdBy: user.id })
@@ -482,7 +474,6 @@ function App() {
     if (!newUserName.trim()) return
 
     try {
-      const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: newUserName, createdBy: user.id })
@@ -652,7 +643,6 @@ function App() {
     if (roomToDelete) {
       
       try {
-        const res = await fetch(`${API_URL}/api/rooms/${roomToDelete.id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id })
@@ -687,7 +677,6 @@ function App() {
 
   const handleSetAdmin = async (userId, username, newRole) => {
     try {
-      const res = await fetch(`${API_URL}/api/users/${userId}/role`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role: newRole, userId: user.id })
@@ -711,7 +700,6 @@ function App() {
   const confirmDeleteUser = async () => {
     if (userToDelete) {
       try {
-        const res = await fetch(`${API_URL}/api/users/${userToDelete.id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id })
@@ -754,7 +742,6 @@ function App() {
     }
     
     try {
-      const res = await fetch(`${API_URL}/api/user/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ oldPassword, newPassword, userId: user.id })
@@ -859,7 +846,6 @@ function App() {
     if (!userToKick || !currentRoom) return
     
     try {
-      const res = await fetch(`${API_URL}/api/rooms/${currentRoom.id}/kick`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: userToKick, kickedBy: user.id })
@@ -1080,7 +1066,6 @@ function App() {
         })
         
         // 先获取最新的房间列表，然后进入适当的房间
-        fetch(`${API_URL}/api/rooms`)
           .then(res => res.json())
           .then(updatedRooms => {
             
@@ -1173,7 +1158,6 @@ function App() {
         // 同时更新当前房间的状态，确保状态同 ?
         if (currentRoom) {
           
-          fetch(`${API_URL}/api/rooms`)
             .then(res => res.json())
             .then(updatedRooms => {
               
@@ -1213,7 +1197,6 @@ function App() {
 
 
         // 重新获取房间列表
-        fetch(`${API_URL}/api/rooms`)
           .then(res => res.json())
           .then(updatedRooms => {
             setRooms(sortRooms(updatedRooms))
@@ -1245,7 +1228,6 @@ function App() {
         // 只有当移动的是当前用户时，才更新界面
         if (data.userId === user?.id) {
           // 重新获取房间列表
-          fetch(`${API_URL}/api/rooms`)
             .then(res => res.json())
             .then(updatedRooms => {
               
