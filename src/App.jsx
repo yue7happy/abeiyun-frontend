@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import io from 'socket.io-client'
 import './App.css'
 
-const API_URL = 'https://teamup-backend.yue7happy.workers.dev/api';
-
+const API_URL = 'https://teamup-backend.yue7happy.workers.dev';
 const statusColors = {
   matching: '#ea4335',
   gaming: '#34a853',
