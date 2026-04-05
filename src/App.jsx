@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import io from 'socket.io-client'
 import './App.css'
 
-const statusColors = {
+const API_URL = 'https://backend.yue7happy.workers.dev';
   matching: '#ea4335',
   gaming: '#34a853',
   idle: '#1a73e8',
